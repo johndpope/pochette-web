@@ -1,0 +1,158 @@
+.container
+  %h1 Trezor Sandbox
+
+  %ul.nav.nav-tabs(role="tablist")
+    %li.active(role="presentation")
+      %a(data-toggle="tab" href="#trezor_transaction_builder")
+        TrezorTransactionBuilder
+    %li(role="presentation")
+      %a(data-toggle="tab" href="#multisig_address")
+        Make Multisig Address
+
+  .tab-content
+    #trezor_transaction_builder.tab-pane.active(role="tabpanel")
+      %form
+        %h2 Parameters
+        .form-group
+          %h3 bip32_addresses
+          %p
+            List of addresses in wallet. We will be spending their unspent outputs.
+            Each address is represented as a pair, with the public address string
+            and the BIP32 path as a list of integers.
+          %p
+            Multisig addresses are represented as a list of root XPUBs,
+            and the BIP32 derivation path as an array of integers.
+          %textarea#bip32_addresses.form-control(rows=10)
+        %span#add_address.btn.btn-default Add Address
+        %span#add_multisig_address.btn.btn-default Add Multisig Address
+        .form-group
+          %h3 outputs
+          %p
+            List of pairs [recipient_address, amount_in_satoshis] This will not be all the final
+            outputs in the transaction, as a 'change' output may be added if needed.
+          %textarea#outputs.form-control(rows=10)
+        %span#add_output.btn.btn-default Add Output
+        .form-group
+          %h3 utxo_blacklist
+          %p
+            Optional. List of utxos to ignore, a list of pairs [transaction hash, position]
+          %textarea#utxo_blacklist.form-control(rows=10)
+        %span#add_utxo_blacklist.btn.btn-default Add UTXO to blacklist
+        .form-group
+          %h3 change_address
+          %p
+            Optional. Change address to use. Will default to the first source address.
+          %input#change_address.form-control(type="text")
+        .form-group
+          %h3 fee_per_kb
+          %p
+            Optional. Defaults to 10000 satoshis
+          %input#fee_per_kb.form-control(type="text")
+        %h3 spend all
+        %p
+          Optional. Wether to spend all available utxos or just select enough to cover the given outputs.
+        .checkbox
+          %label
+            %input#spend_all(type="checkbox")
+            yes
+        %br
+        %p
+          #prepare_transaction.btn.btn-primary.btn-lg Prepare Transaction
+
+        %hr
+        %h2 Prepared Transaction
+        .form-group
+          %textarea#as_hash.form-control(rows=30)
+
+        .alert.alert-warning.hidden
+          This transaction has multi-signature inputs, connect another trezor and 
+          keep on signing.
+            
+        %span#sign_transaction.btn.btn-primary.btn-lg Sign Transaction
+
+        %hr
+        %h2 Signed Transaction
+        %p
+          Copy and paste your raw transaction hex representation and push it however you want,
+          Here are some transaction pushing services:
+          %br
+          %a(href="https://blockr.io/tx/push") https://tbtc.blockr.io/tx/push
+          %br
+          %a(href="https://live.blockcypher.com/btc-testnet/pushtx/") https://live.blockcypher.com/btc-testnet/pushtx/
+
+        .form-group
+          %textarea#signed_transaction.form-control(rows=25)
+
+    #multisig_address.tab-pane(role="tabpanel")
+      %form
+        .form-group
+          %h3 Collect xpub's
+          %p
+            Connect your Trezors, one at a time, and fetch their root xpubs
+            from which the multisig address will be derived.
+            Unplugging your device then plugging it again but using a different
+            passphrase is also interpreted as a different device.
+          %textarea#xpubs.form-control(rows=6)
+        %span#read_xpub.btn.btn-default Read Current Trezor xpub
+        .form-group
+          %h3 Required signatures
+          %p
+            How many signatures are required to redeem funds received to this address?
+          %input#signers.form-control(value="2")
+        .form-group
+          %h3 Path
+          %p
+            BIP32 derivation path (ex: 44/0/0/1). Your address will be created from
+            all the public keys at this path in each device.
+          %input#path.form-control(value="0/0")
+
+        %br
+        %p
+          #make_multisig_address.btn.btn-primary.btn-lg Make Multisig Address
+        %hr
+        .form-group
+          %h3 Your address
+          %input#view_multisig_address.form-control
+
+
+  .pin_dialog.modal.fade(role="dialog")
+    .modal-dialog
+      .modal-content
+        .modal-body
+          %h3 Enter PIN
+          %p Look at the device for number positions
+          
+          .grid
+            .row
+              .col-xs-4
+                %button.btn-block.btn-primary.btn(type="button" data-value="7") &#8226;
+              .col-xs-4
+                %button.btn-block.btn-primary.btn(type="button" data-value="8") &#8226;
+              .col-xs-4
+                %button.btn-block.btn-primary.btn(type="button" data-value="9") &#8226;
+            %br
+            .row
+              .col-xs-4
+                %button.btn-block.btn-primary.btn(type="button" data-value="4") &#8226;
+              .col-xs-4
+                %button.btn-block.btn-primary.btn(type="button" data-value="5") &#8226;
+              .col-xs-4
+                %button.btn-block.btn-primary.btn(type="button" data-value="6") &#8226;
+            %br
+            .row
+              .col-xs-4
+                %button.btn-block.btn-primary.btn(type="button" data-value="1") &#8226;
+              .col-xs-4
+                %button.btn-block.btn-primary.btn(type="button" data-value="2") &#8226;
+              .col-xs-4
+                %button.btn-block.btn-primary.btn(type="button" data-value="3") &#8226;
+        
+          %br
+          .preview.row
+            .col-xs-9
+              %input.form-control(type="password" disabled="disabled")
+            .col-xs-3
+              %button.btn-block.btn-primary.btn.pin-del(type="button") &lt;
+
+        .modal-footer
+          %button.btn-block.btn.btn-success.done.pin-enter(type="button") Enter

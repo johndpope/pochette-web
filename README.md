@@ -1,4 +1,4 @@
-= PochetteWeb
+# PochetteWeb
 
 This project aims to be a developer sandbox for
 building transactions using [Pochette](https://github.com/bitex-la/pochette)

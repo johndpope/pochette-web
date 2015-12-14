@@ -12,7 +12,6 @@ module PochetteWeb
     end
 
     def trezor_transaction_builder
-      debugger
       t = Pochette::TrezorTransactionBuilder.new(
         bip32_addresses: params.require(:bip32_addresses),
         outputs: params.require(:outputs),

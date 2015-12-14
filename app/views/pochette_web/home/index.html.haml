@@ -1,5 +1,16 @@
 .container
-  %h1 Trezor Sandbox
+  %h1
+    Pochette Trezor Sandbox
+  %p
+    Play with your trezor and Pochette, create multisig addresses,
+    spend their unspent outputs, have fun!
+  %p
+    Source available on GitHub
+    %a(href="https://github.com/bitex-la/pochette-web") bitex-la/pochette-web
+  .alert.alert-warning
+    Running on
+    %strong Testnet3.
+    You're limited to prepare no more than 5 transactions per minute because our testnet node is very modest.
 
   %ul.nav.nav-tabs(role="tablist")
     %li.active(role="presentation")
@@ -13,6 +24,9 @@
     #trezor_transaction_builder.tab-pane.active(role="tabpanel")
       %form
         %h2 Parameters
+        %p
+          Start by setting all the parameters to create a transaction to be signed
+          with your trezor.
         .form-group
           %h3 bip32_addresses
           %p
@@ -61,10 +75,12 @@
 
         %hr
         %h2 Prepared Transaction
+        %p
+          This is the prepared transaction as returned by Pochette::TrezorTransactionBuilder#as_hash
         .form-group
           %textarea#as_hash.form-control(rows=30)
 
-        .alert.alert-warning.hidden
+        #pending_multisig_signatures.alert.alert-warning.hidden
           This transaction has multi-signature inputs, connect another trezor and 
           keep on signing.
             
@@ -76,7 +92,7 @@
           Copy and paste your raw transaction hex representation and push it however you want,
           Here are some transaction pushing services:
           %br
-          %a(href="https://blockr.io/tx/push") https://tbtc.blockr.io/tx/push
+          %a(href="https://tbtc.blockr.io/tx/push") https://tbtc.blockr.io/tx/push
           %br
           %a(href="https://live.blockcypher.com/btc-testnet/pushtx/") https://live.blockcypher.com/btc-testnet/pushtx/
 
@@ -156,3 +172,15 @@
 
         .modal-footer
           %button.btn-block.btn.btn-success.done.pin-enter(type="button") Enter
+
+  .passphrase_dialog.modal.fade(role="dialog")
+    .modal-dialog
+      .modal-content
+        .modal-body
+          %h3 Enter Passphrase
+          %input#passphrase.form-control(type="password" placeholder="Password")
+          %br
+          %input#passphrase_confirmation.form-control(type="password" placeholder="Password confirmation")
+
+        .modal-footer
+          %button.btn-block.btn.btn-success.done.passphrase-enter(type="button") Enter

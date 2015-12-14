@@ -1,3 +1,10 @@
 = PochetteWeb
 
-This project rocks and uses MIT-LICENSE.
+This project aims to be a developer sandbox for
+building transactions using (https://github.com/bitex-la/pochette)[Pochette]
+and signing them using (https://www.bitcointrezor.com/)[Trezor devices]
+
+It also features a P2SH multisig address generator for Trezor and let's you
+spend from these type of addresses.
+
+Check out the demo at (https://pochette_sandbox.bitex.la)[pochette_sandbox.bitex.la]

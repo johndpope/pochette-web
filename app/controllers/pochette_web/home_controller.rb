@@ -1,5 +1,4 @@
 require_dependency "pochette_web/application_controller"
-require_dependency 'byebug'
 
 module PochetteWeb
   class HomeController < ApplicationController

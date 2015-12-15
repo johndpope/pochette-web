@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
   s.add_dependency "twitter-bootstrap-rails", "~> 3.2.2"
   s.add_dependency "coffee-rails", "~> 4.0.1"
   s.add_dependency "jquery-rails"
-  s.add_dependency "haml", "~> 4.0.7"
+  s.add_dependency "haml", "~> 4.0.6"
   s.add_dependency "pochette", "~> 0.2.2"
   s.add_dependency "pochette_toshi", "~> 0.2.0"
 

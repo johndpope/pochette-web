@@ -110,21 +110,26 @@ updatePendingMultisigSignaturesNotice = ->
   else
     $("#pending_multisig_signatures").addClass('hidden')
 
-updatePreparedTransactionSignatures = (signature, session) ->
+updatePreparedTransactionSignatures = (signatures, session) ->
   prepared = readTextArea($("#as_hash"))
   inputs = prepared.trezor_inputs
   return unless _.any(inputs, (i) -> i.multisig)
 
   session.getPublicKey([]).then (result) ->
-    public_key = result.message.node.public_key
-    _.each inputs, (i) ->
-      index = _.findIndex i.multisig.pubkeys, (p) -> p.node.public_key == public_key
-      i.multisig.signatures[index] = signature
+    publicKey = result.message.node.public_key
+    _.each inputs, (input, inputIndex) ->
+      if input.multisig
+        signatureIndex = _.findIndex input.multisig.pubkeys, (p) ->
+          p.node.public_key == publicKey
+        input.multisig.signatures[signatureIndex] = signatures[inputIndex]
+      else if !input.script_sig
+        input.script_sig = signatures[inputIndex]
     writeTextArea($("#as_hash"), prepared)
 
 $ ->
   coin = coins.testnet
   trezor = new Trezor(coin.name, pinHandler, passHandler)
+  window.global_trezor = trezor
 
   $('#add_address').click ->
     modifyTextArea '#bip32_addresses', [], (value) ->
@@ -174,8 +179,9 @@ $ ->
       session.signTx(t.trezor_inputs, t.trezor_outputs, t.transactions, coin)
         .then (res) =>
           writeTextArea($("#signed_transaction"), res)
+          console.log("Signatures", res)
           updatePendingMultisigSignaturesNotice()
-          updatePreparedTransactionSignatures(res.message.serialized.signatures[0], session)
+          updatePreparedTransactionSignatures(res.message.serialized.signatures, session)
 
   $('#make_multisig_address').click ->
     $.ajax

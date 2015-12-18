@@ -14,4 +14,4 @@ gemspec
 # gem 'byebug', group: [:development, :test]
 gem 'rack-attack'
 gem 'unicorn'
-
+gem 'byebug'

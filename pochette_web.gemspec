@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
   s.add_dependency "jquery-rails"
   s.add_dependency "haml", "~> 4.0.6"
   s.add_dependency "pochette", "~> 0.2.2"
-  s.add_dependency "pochette_toshi", "~> 0.2.0"
+  s.add_dependency "pochette_toshi", "~> 0.2.3"
 
   s.add_development_dependency "sqlite3"
 end

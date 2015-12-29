@@ -62,31 +62,6 @@ pinHandler = (type, callback) ->
 # Handles Trezor's PIN request by showing a dialog
 # mimicing a numeric keyboard and passes the selection
 # back to the device using the received callback.
-pinHandler = (type, callback) ->
-  element = $('.pin_dialog')
-  pin = element.find('.preview input')
-  pin.val('')
-
-  element.find('.grid .btn').click (e) =>
-    e.preventDefault()
-    pin.val(pin.val() + $(e.currentTarget).data('value'))
-
-  element.find('.btn.pin-del').click (e) =>
-    e.preventDefault()
-    pin.val(pin.val().slice(0, -1))
-
-  element.find('.btn.done').click (e) =>
-    callback(null, pin.val())
-    element.find('.grid .btn').unbind()
-    element.find('.btn.pin-del').unbind()
-    element.find('.btn.done').unbind()
-    element.modal('hide')
-
-  element.modal('show')
-
-# Handles Trezor's PIN request by showing a dialog
-# mimicing a numeric keyboard and passes the selection
-# back to the device using the received callback.
 passHandler = (callback) ->
   element = $('.passphrase_dialog')
   passphrase = element.find('#passphrase')
